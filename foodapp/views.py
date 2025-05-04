@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
 from .models import Restaurant, MenuItem
 from .forms import CustomUserCreationForm  # your custom form with email, phone, username, password
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     restaurants = Restaurant.objects.all()
@@ -63,3 +64,14 @@ def custom_login_view(request):
         return render(request, 'login.html', {'error': 'Invalid email or password'})
     
     return render(request, 'login.html')
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html')
+
+@login_required
+def cart(request):
+    return render(request, 'cart.html')
+
+def show_restaurants(request):
+    return render(request, 'restaurants.html')

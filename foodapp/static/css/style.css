@@ -21,3 +21,21 @@ body {
 .card:hover {
     transform: scale(1.03);
 }
+
+.navbar-brand {
+    font-size: 2.5rem; /* Adjust this value to your preference */
+}
+
+/* Transparent navbar */
+.navbar {
+    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+    backdrop-filter: blur(10px); /* Optional: adds a blur effect to the background */
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: white;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #ffcc00;
+}
