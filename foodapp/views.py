@@ -1,3 +1,5 @@
+# foodapp/views.py
+
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -10,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 
 def home(request):
     restaurants = Restaurant.objects.all()
-    featured_restaurants = Restaurant.objects.filter(is_featured=True)[:4]
+    featured_restaurants = Restaurant.objects.filter(is_featured=True)[:5]
     paginator = Paginator(restaurants, 6)
     first_page_restaurants = paginator.get_page(1)
     return render(request, 'home.html', {
@@ -46,12 +48,11 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
 
-# ✅ Login with email and password
 def custom_login_view(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-        
+
         users = User.objects.filter(email=email)
         if users.exists():
             user = users.first()  # Use the first user with this email
@@ -59,10 +60,9 @@ def custom_login_view(request):
             if user:
                 auth_login(request, user)
                 return redirect('home')
-        
-        # Optional: you can show an error message here
+
         return render(request, 'login.html', {'error': 'Invalid email or password'})
-    
+
     return render(request, 'login.html')
 
 @login_required
