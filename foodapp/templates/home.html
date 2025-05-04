@@ -10,58 +10,132 @@
     <title>Food Nest</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        /* Custom styles */
+        .restaurant-card {
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .restaurant-card:hover {
+            transform: scale(1.05);
+        }
+
+        .main-background {
+            background-color: #474748;
+        }
+
+        .featured-section {
+            background-color: #585656;
+            padding: 50px 0;
+        }
+
+        .restaurant-list-section {
+            padding: 50px 0;
+        }
+    </style>
 </head>
 <body>
-    <!-- Background wrapper -->
-    <div class="main-background">
 
-        <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
-            <a class="navbar-brand text-white" href="{% url 'home' %}">Food Nest</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'login' %}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'register' %}">Signup</a>
-                    </li>
-                </ul>
+<div class="main-background">
+
+    <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
+        <a class="navbar-brand text-white" href="{% url 'home' %}">Food Nest</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'register' %}">Signup</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <!-- Welcome Text -->
+        <div class="row">
+            <div class="col-md-12 text-center text-white">
+                <h1 class="display-4">Welcome to Food Nest</h1>
+                <p class="lead">Discover the best restaurants and order your favorite meals.</p>
             </div>
-        </nav>        
+        </div>
 
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-12 text-center text-white">
-                    <h1 class="display-4">Welcome to Food Nest</h1>
-                    <p class="lead">Discover the best restaurants and order your favorite meals.</p>
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <h2 class="text-center text-white">Restaurant List</h2>
-                    <div class="row">
-                        {% for restaurant in restaurants %}
-                            <div class="col-md-4 mb-4">
-                                <div class="card">
-                                    <img src="{% static 'images/bg2.jpg' %}" class="card-img-top" alt="Restaurant Image">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ restaurant.name }}</h5>
-                                        <p class="card-text">{{ restaurant.address }}</p>
-                                        <a href="{% url 'menu_item_list' restaurant.id %}" class="btn btn-primary">View Menu</a>
-                                    </div>
+        <!-- Featured Restaurants -->
+        <div class="featured-section">
+            <div class="container">
+                <h2 class="text-center">🔥 Featured Restaurants</h2>
+                <p class="text-center text-white mb-4">Don't miss today's best offers!</p>
+                <div class="row">
+                    {% for deal in featured_restaurants %}
+                        <div class="col-md-3 mb-4">
+                            <div class="card restaurant-card">
+                                <img src="{% static 'images/featured.jpg' %}" class="card-img-top" alt="Featured Restaurant">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ deal.name }}</h5>
+                                    <p class="card-text">{{ deal.address }}</p>
+                                    <a href="{% url 'menu_item_list' deal.id %}" class="btn btn-danger btn-sm">Order Now</a>
                                 </div>
                             </div>
-                        {% endfor %}
-                    </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
 
-    </div> <!-- End main-background -->
+        <!-- Restaurant List (Infinite Scroll) -->
+        <div class="restaurant-list-section">
+            <h2 class="text-center">Explore Restaurants</h2>
+            <div class="row" id="restaurant-list">
+                {% for restaurant in restaurants %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card restaurant-card">
+                            <img src="{% static 'images/bg2.jpg' %}" class="card-img-top" alt="Restaurant Image">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ restaurant.name }}</h5>
+                                <p class="card-text">{{ restaurant.address }}</p>
+                                <a href="{% url 'menu_item_list' restaurant.id %}" class="btn btn-primary">View Menu</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- Load More Button -->
+            <div class="text-center mt-4">
+                <button class="btn btn-primary" id="load-more-btn">Load More</button>
+            </div>
+        </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </div> <!-- End Container -->
+
+</div> <!-- End main-background -->
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let page = 1;
+
+        $('#load-more-btn').click(function () {
+            page++;
+            $.ajax({
+                url: "{% url 'restaurant_list' %}?page=" + page,
+                method: "GET",
+                headers: { "X-Requested-With": "XMLHttpRequest" },
+                success: function (data) {
+                    if (data.html.trim()) {
+                        $('#restaurant-list').append(data.html);
+                    } else {
+                        $('#load-more-btn').hide();  // Hide if no more data
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+
+
 </body>
 </html>
