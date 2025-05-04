@@ -1,0 +1,21 @@
+<!-- foodapp/templates/foodapp/restaurant_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Restaurant List</h1>
+        <ul class="list-group">
+            {% for restaurant in restaurants %}
+                <li class="list-group-item">
+                    <a href="{% url 'menu_item_list' restaurant.id %}">{{ restaurant.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
