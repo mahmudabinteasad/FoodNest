@@ -1,0 +1,21 @@
+.main-background {
+    background: url('/static/images/bg2.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Optional: improve readability over the background */
+.text-white {
+    color: white;
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.custom-navbar {
+    background-color: rgba(255, 255, 255, 0.1); /* slight white with transparency */
+    backdrop-filter: blur(5px); /* adds a frosted glass effect */
+    -webkit-backdrop-filter: blur(5px); /* Safari support */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* soft border */
+}
