@@ -1,21 +1,23 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll; /* Enables scrolling */
+}
+
 .main-background {
     background: url('/static/images/bg2.jpg') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
-    padding: 20px;
-}
-
-/* Optional: improve readability over the background */
-.text-white {
-    color: white;
+    padding: 40px 20px;
+    overflow-y: auto;
 }
 
 .card {
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s;
 }
-.custom-navbar {
-    background-color: rgba(255, 255, 255, 0.1); /* slight white with transparency */
-    backdrop-filter: blur(5px); /* adds a frosted glass effect */
-    -webkit-backdrop-filter: blur(5px); /* Safari support */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* soft border */
+.card:hover {
+    transform: scale(1.03);
 }
