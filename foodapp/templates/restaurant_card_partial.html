@@ -1,0 +1,12 @@
+{% for restaurant in restaurants %}
+    <div class="col-md-4 mb-4">
+        <div class="card restaurant-card">
+            <img src="{% static 'images/bg2.jpg' %}" class="card-img-top" alt="Restaurant Image">
+            <div class="card-body">
+                <h5 class="card-title">{{ restaurant.name }}</h5>
+                <p class="card-text">{{ restaurant.address }}</p>
+                <a href="{% url 'menu_item_list' restaurant.id %}" class="btn btn-primary">View Menu</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
