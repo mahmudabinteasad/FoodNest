@@ -1,21 +1,60 @@
-<!-- foodapp/templates/foodapp/restaurant_list.html -->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .restaurant-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .restaurant-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .restaurant-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .restaurant-description {
+            font-size: 1rem;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="my-4">Restaurant List</h1>
-        <ul class="list-group">
+    <div class="container mt-5">
+        <h1 class="text-center my-4">Explore Restaurants</h1>
+        
+        <!-- Restaurant List -->
+        <div class="row">
             {% for restaurant in restaurants %}
-                <li class="list-group-item">
-                    <a href="{% url 'menu_item_list' restaurant.id %}">{{ restaurant.name }}</a>
-                </li>
+                <div class="col-md-4 mb-4">
+                    <div class="card restaurant-card">
+                        <img src="{% static 'images/bg2.jpg' %}" class="card-img-top" alt="{{ restaurant.name }}">
+                        <div class="card-body">
+                            <h5 class="restaurant-name">{{ restaurant.name }}</h5>
+                            <p class="restaurant-description">{{ restaurant.address }}</p>
+                            <a href="{% url 'menu_item_list' restaurant.id %}" class="btn btn-primary">View Menu</a>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
+
+        <!-- Back to Home Button -->
+        <div class="text-center mt-4">
+            <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+        </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
