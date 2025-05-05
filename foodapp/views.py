@@ -6,9 +6,12 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.models import User
+from django.db import connection
+from django.contrib.auth.hashers import make_password
 from .models import Restaurant, MenuItem
-from .forms import CustomUserCreationForm  # your custom form with email, phone, username, password
+from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 def home(request):
     restaurants = Restaurant.objects.all()
@@ -43,6 +46,22 @@ def register(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
+
+            # Get data
+            username = user.username
+            email = user.email
+            phone = form.cleaned_data.get('phone_number')
+            password_raw = form.cleaned_data.get('password1')
+            hashed_password = make_password(password_raw)
+            address = form.cleaned_data.get('address')
+
+            # Insert into custom users table using raw SQL
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    INSERT INTO users (username, password, email, phone, address)
+                    VALUES (%s, %s, %s, %s, %s)
+                """, [username, hashed_password, email, phone, address])
+
             return redirect('home')
     else:
         form = CustomUserCreationForm()
@@ -75,3 +94,11 @@ def cart(request):
 
 def show_restaurants(request):
     return render(request, 'restaurants.html')
+
+def update_profile(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        # Future: Update raw SQL here if needed
+        return redirect('some_page')
+    return render(request, 'update_profile.html')

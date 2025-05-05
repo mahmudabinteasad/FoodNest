@@ -14,4 +14,5 @@ urlpatterns = [
     path('cart/', views.cart, name='cart'),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
     path('restaurants/', views.show_restaurants, name='restaurants'),
+    path('update-profile/', views.update_profile, name='update_profile'),
 ]
