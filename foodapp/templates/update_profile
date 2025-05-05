@@ -1,6 +1,0 @@
-<form action="{% url 'update_profile' %}" method="post">
-  {% csrf_token %}
-  <input type="text" name="name">
-  <input type="email" name="email">
-  <button type="submit">Update</button>
-</form>
