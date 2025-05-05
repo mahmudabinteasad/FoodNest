@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 def home(request):
     restaurants = Restaurant.objects.all()
     featured_restaurants = Restaurant.objects.filter(is_featured=True)[:5]
-    paginator = Paginator(restaurants, 6)
+    paginator = Paginator(restaurants, 20)
     first_page_restaurants = paginator.get_page(1)
     return render(request, 'home.html', {
         'restaurants': first_page_restaurants,
