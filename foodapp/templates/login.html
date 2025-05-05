@@ -19,8 +19,8 @@
                         <form method="post">
                             {% csrf_token %}
                             <div class="form-group">
-                                <label for="email" class="text-white">Email</label>
-                                <input type="email" name="email" class="form-control" required>
+                                <label for="username_or_email" class="text-white">Username or Email</label>
+                                <input type="text" name="username_or_email" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-white">Password</label>
@@ -30,7 +30,7 @@
                             <div class="text-right mt-2">
                                 <a href="{% url 'password_reset' %}" class="text-white">Forgot password?</a>
                             </div>
-                        </form>
+                        </form>                        
                     </div>
                 </div>
             </div>
